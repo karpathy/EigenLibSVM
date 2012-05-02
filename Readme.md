@@ -21,14 +21,15 @@ See more for included demo.
 ## Install
 
 ```
-$ sudo apt-get install libsvm-dev
-$ sudo apt-get install libeigen3-de
-$ git clone <this project's .git>
-$ cd eigenlibsvm/buil
-$ cmake .
-$ mak
-$ .
-$ ./svm_tes
+$ sudo apt-get install libsvm-dev  
+$ sudo apt-get install libeigen3-dev  
+$ git clone git@github.com:karpathy/EigenLibSVM.git  
+$ cd EigenLibSVM  
+$ mkdir build  
+$ cd build  
+$ cmake ..  
+$ make  
+$ ./svm_test  
 ```
 
 where the last line will run a tiny demo that makes sure everything installed ok
