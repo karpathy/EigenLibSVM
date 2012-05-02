@@ -15,8 +15,14 @@ svm.test(X, yhat);
 ```
 
 where X is an `Eigen::MatrixXf` NxD matrix, y is an `Eigen::MatrixXf` Nx1 matrix of
-labels (-1 or 1), or a `vector<int>` of labels.
-See more for included demo.
+labels (-1 or 1), or a `vector<int>` of labels. You can also save and load the models:
+
+```c++
+svm.saveModel("tmp_model");  
+svm.loadModel("tmp_model");  
+```
+
+See demo for details.
 
 ## Install
 
