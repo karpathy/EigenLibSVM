@@ -9,8 +9,8 @@ BSD licence
 #include <stdlib.h>
 
 #include <eigen3/Eigen/Eigen>
-#include "svm_utils.h"
-#include "eigen_extensions.h"
+#include <eigenlibsvm/svm_utils.h>
+#include <eigenlibsvm/eigen_extensions.h>
 
 using namespace std;
 using namespace esvm;

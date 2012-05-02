@@ -4,8 +4,8 @@ Author: Andrej Karpathy (http://cs.stanford.edu/~karpathy/)
 BSD licence
 */
 
-#include "svm_utils.h"
-#include "eigen_extensions.h"
+#include <eigenlibsvm/svm_utils.h>
+#include <eigenlibsvm/eigen_extensions.h>
 
 #define Malloc(type,n) (type *)malloc((n)*sizeof(type))
 
