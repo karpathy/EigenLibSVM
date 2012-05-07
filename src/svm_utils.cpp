@@ -33,6 +33,8 @@ namespace esvm {
     
     model_= NULL;
     problem_= NULL;
+    
+    D_= 0;
   }
 
   SVMClassifier::~SVMClassifier() {
@@ -56,18 +58,18 @@ namespace esvm {
 
   void SVMClassifier::train(const Eigen::MatrixXf &X, const vector<int> &y) {
     
-    // Clean up memory allocated in the previous calls to train
-    if(model_ != NULL) {
-      svm_free_model_content(model_);
-      model_= NULL;
-    }
-    
-    // Do some simple error checking
+    // Do some simple error checking before we begin
     int Ntr= X.rows();
     int D= X.cols();
     if(Ntr!=y.size()) {printf("ERROR: Number of labels should match number of examples! Exitting...\n"); return;}
     if(X.rows() == 0) {printf("No data provided in X: #rows = 0. Exitting...\n"); return;}
     if(X.cols() == 0) {printf("No data provided in X: #cols = 0. Exitting...\n"); return;}
+    
+    // Clean up memory allocated in the previous calls to train
+    if(model_ != NULL) {
+      svm_free_model_content(model_);
+      model_= NULL;
+    }
     
     // Preallocate structures for transformation
     problem_ = new svm_problem();
@@ -75,6 +77,7 @@ namespace esvm {
     problem_->y= Malloc(double, Ntr);
     problem_->x= Malloc(struct svm_node*, Ntr);
     x_space_= Malloc(struct svm_node, Ntr * (D+1)); // D+1 because of libsvm packing conventions
+    D_= D; //store dimension of data
     
     // Process data from X matrix appropriately
     int j=0;
@@ -145,6 +148,22 @@ namespace esvm {
     }
     
     free(x);
+  }
+  
+  void SVMClassifier::getw(Eigen::MatrixXf &w, float &b) {
+    if(model_ == NULL) { printf("Error! Train an SVM first! Exitting... \n"); return;}
+
+    b= model_->rho[0]; //libsvm stores -b in rho
+    
+    // w is just linear combination of the support vectors when kernel is linear
+    w.resize(D_, 1);    
+    for(int j=0;j<D_;j++) { 
+      double acc=0;
+      for(int i=0;i<model_->l;i++) {  
+        acc += model_->SV[i][j].value * model_->sv_coef[0][i];
+      }
+      w(j)= -acc;
+    }
   }
 
   int SVMClassifier::saveModel(const char *filename) {

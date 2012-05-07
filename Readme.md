@@ -4,6 +4,7 @@ Andrej Karpathy
 
 This is a small C++ wrapper to call libsvm if you use the Eigen matrix library.
 Dependencies consist of libsvm and eigen3 library.
+Current support is only for dense matrices with linear kernel svm.
 
 ## Usage
 
@@ -20,6 +21,14 @@ labels (-1 or 1), or a `vector<int>` of labels. You can also save and load the m
 ```c++
 svm.saveModel("tmp_model");  
 svm.loadModel("tmp_model");  
+```
+
+there is now also functionality to directly get the weights:
+```c++
+Eigen::MatrixXf w;
+float b;
+svm.getw(w, b);
+Eigen::MatrixXf margin= ((X * w).array() + b).matrix(); // yhat = sign(margin)
 ```
 
 See demo for details.
