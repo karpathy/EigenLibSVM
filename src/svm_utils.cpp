@@ -33,7 +33,8 @@ namespace esvm {
     
     model_= NULL;
     problem_= NULL;
-    
+    x_space_= NULL;
+
     D_= 0;
   }
 
@@ -41,6 +42,7 @@ namespace esvm {
     
     svm_destroy_param(param_); //frees weight, weight_label
     free(param_);
+    if(x_space_ != NULL) free(x_space_);
     
     // free model, if it exists
     if(model_ != NULL) svm_free_model_content(model_);
@@ -69,6 +71,11 @@ namespace esvm {
     if(model_ != NULL) {
       svm_free_model_content(model_);
       model_= NULL;
+    }
+	
+    if(x_space_ != NULL) {
+      free(x_space_);
+      x_space_ = NULL;
     }
     
     // Preallocate structures for transformation
@@ -114,7 +121,6 @@ namespace esvm {
     // free memory for the problem data
     free(problem_->y);
     free(problem_->x);
-    free(x_space_);
   }
 
   void SVMClassifier::test(const Eigen::MatrixXf &X, vector<int> &yhat) {
