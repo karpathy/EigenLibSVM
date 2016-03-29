@@ -10,6 +10,8 @@ BSD licence
 #define Malloc(type,n) (type *)malloc((n)*sizeof(type))
 
 namespace esvm {
+	
+  void print_null(const char *s) {}
 
   SVMClassifier::SVMClassifier() {
     
@@ -46,6 +48,11 @@ namespace esvm {
     
     // free model, if it exists
     if(model_ != NULL) svm_free_model_content(model_);
+  }
+  
+  void SVMClassifier::setDisplay(bool quiet){
+      if(quiet)
+        svm_set_print_string_function(print_null);
   }
 
   void SVMClassifier::train(const Eigen::MatrixXf &X, const Eigen::MatrixXf &y) {

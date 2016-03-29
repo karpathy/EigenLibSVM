@@ -35,6 +35,9 @@ namespace esvm {
       SVMClassifier();
       ~SVMClassifier();
       
+      //Set Display Flag
+      void setDisplay(bool quiet);
+      
       // train the svm
       void train(const Eigen::MatrixXf &X, const vector<int> &y);
       void train(const Eigen::MatrixXf &X, const Eigen::MatrixXf &y);
